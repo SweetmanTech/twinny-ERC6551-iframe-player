@@ -5,7 +5,6 @@ import getIpfsLink from "@/lib/utils/getIpfsLink";
 
 ///Music Player
 const MusicPlayer = (songs: any) => {
-  console.log("SWEETS MusicPlayer songs", songs);
   /// Query Device Size / You can you Tailwind Hidden Properties, but this Locks it in.
   const isMobile = true; //useMediaQuery({ query: "(max-width: 600px)" });
   const isTablet = true; //useMediaQuery({ query: "(max-width: 1100px)" });
@@ -16,12 +15,10 @@ const MusicPlayer = (songs: any) => {
 
   const currentSong = song[currentSongIndex];
   /// Current Song Cover
-  console.log("SWEETS CURRENTSONG", currentSong);
   const currentCover = currentSong?.cover; // TODO urlFor(currentSong.cover).url();
 
   /// Audio Logic + Sanity URL + Song URL Processing + Audio Ref for current song
   const audioUrl = getIpfsLink(currentSong?.audio); // TODO SWEETS
-  console.log("SWEETS audioUrl", audioUrl);
   const audioRef = useRef(new Audio(audioUrl));
   const id = song.length;
 
@@ -82,7 +79,6 @@ const MusicPlayer = (songs: any) => {
   /// Play Button Logic
   const handlePlayPauseClick = () => {
     setIsPlaying(!isPlaying);
-    console.log("SWEETS PLAY CLICKED");
     if (isPlaying) {
       audioRef.current.pause();
     } else {
