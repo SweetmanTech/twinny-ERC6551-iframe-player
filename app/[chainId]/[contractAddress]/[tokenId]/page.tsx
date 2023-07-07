@@ -9,7 +9,6 @@ import { TbLogo } from "@/components/icon";
 import { useGetApprovals, useNft } from "@/lib/hooks";
 import { TbaOwnedNft } from "@/lib/types";
 import { getAddress } from "viem";
-import { TokenDetail } from "./TokenDetail";
 import { HAS_CUSTOM_IMPLEMENTATION } from "@/lib/constants";
 import MusicPlayer from "@/components/ui/MusicPlayer";
 
@@ -95,19 +94,6 @@ export default function Token({ params, searchParams }: TokenParams) {
       const [data, lensData] = await Promise.all([getNfts(chainId, account), getLensNfts(account)]);
       if (data) {
         setNfts(data);
-        const exampleSong = {
-          cover: "",
-          audio: {
-            asset: {
-              ref: "",
-            },
-          },
-          duration: 100,
-          title: "",
-          album: "",
-          artist: "",
-          featuring: "",
-        };
         const album = data.map((song) => {
           return {
             cover: song?.media?.[0]?.gateway,
