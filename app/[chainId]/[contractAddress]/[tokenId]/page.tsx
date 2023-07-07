@@ -11,6 +11,7 @@ import { TbaOwnedNft } from "@/lib/types";
 import { getAddress } from "viem";
 import { TokenDetail } from "./TokenDetail";
 import { HAS_CUSTOM_IMPLEMENTATION } from "@/lib/constants";
+import MusicPlayer from "@/components/ui/MusicPlayer";
 
 interface TokenParams {
   params: {
@@ -26,6 +27,7 @@ interface TokenParams {
 export default function Token({ params, searchParams }: TokenParams) {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [nfts, setNfts] = useState<TbaOwnedNft[]>([]);
+  const [twinnySongs, setTwinnySongs] = useState([] as any);
   const [lensNfts, setLensNfts] = useState<TbaOwnedNft[]>([]);
   const { tokenId, contractAddress, chainId } = params;
   const [showTokenDetail, setShowTokenDetail] = useState(false);
@@ -93,6 +95,31 @@ export default function Token({ params, searchParams }: TokenParams) {
       const [data, lensData] = await Promise.all([getNfts(chainId, account), getLensNfts(account)]);
       if (data) {
         setNfts(data);
+        const exampleSong = {
+          cover: "",
+          audio: {
+            asset: {
+              ref: "",
+            },
+          },
+          duration: 100,
+          title: "",
+          album: "",
+          artist: "",
+          featuring: "",
+        };
+        const album = data.map((song) => {
+          return {
+            cover: song?.media?.[0]?.gateway,
+            audio: song?.rawMetadata?.animation_url || song?.rawMetadata?.media?.[0]?.item,
+            duration: 100,
+            title: song?.title,
+            album: song?.title,
+            artist: song?.title,
+            featuring: "",
+          };
+        });
+        setTwinnySongs(album);
       }
       if (lensData) {
         setLensNfts(lensData);
@@ -146,43 +173,13 @@ export default function Token({ params, searchParams }: TokenParams) {
     <div className="h-screen w-screen bg-slate-100">
       <div className="max-w-screen relative mx-auto aspect-square max-h-screen overflow-hidden bg-white">
         <div className="relative h-full w-full">
-          {account && nftImages && nftMetadata && (
-            <TokenDetail
-              isOpen={showTokenDetail}
-              handleOpenClose={setShowTokenDetail}
-              approvalTokensCount={approvalData?.length}
-              account={account}
-              tokens={tokens}
-              title={nftMetadata.title}
-              chainId={chainIdNumber}
-            />
+          {nftMetadataLoading ? (
+            <div className="absolute left-[45%] top-[50%] z-10 h-20 w-20 -translate-x-[50%] -translate-y-[50%] animate-bounce">
+              <TbLogo />
+            </div>
+          ) : (
+            <MusicPlayer songs={twinnySongs} />
           )}
-          <div className="max-h-1080[px] relative h-full w-full max-w-[1080px]">
-            {nftMetadataLoading ? (
-              <div className="absolute left-[45%] top-[50%] z-10 h-20 w-20 -translate-x-[50%] -translate-y-[50%] animate-bounce">
-                <TbLogo />
-              </div>
-            ) : (
-              <div
-                className={`grid w-full grid-cols-1 grid-rows-1 transition ${
-                  imagesLoaded ? "" : "blur-xl"
-                }`}
-              >
-                {!isNil(nftImages) ? (
-                  nftImages.map((image, i) => (
-                    <img
-                      key={i}
-                      className="col-span-1 col-start-1 row-span-1 row-start-1 translate-x-0"
-                      src={image}
-                      alt="Nft image"
-                    />
-                  ))
-                ) : (
-                  <></>
-                )}
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </div>
