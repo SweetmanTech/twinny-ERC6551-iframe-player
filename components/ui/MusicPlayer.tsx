@@ -149,7 +149,7 @@ const MusicPlayer = (songs: any) => {
         src={currentCover}
         id="cover-image"
         className="mx-auto w-[100px] rounded-2xl shadow "
-        alt={`${currentSong.title} song-cover`}
+        alt={`${currentSong?.title} song-cover`}
       />
       <audio ref={audioRef} onEnded={handleNextClick} className="hidden" controls={isPlaying}>
         <source src={audioUrl} type="audio/mpeg"></source>
@@ -157,10 +157,10 @@ const MusicPlayer = (songs: any) => {
 
       <div className="mt-4">
         <p className="text-md mb-2 text-center font-medium text-black dark:text-white">
-          {currentSong.title} - {currentSong.album ? currentSong.album : "Single"}
+          {currentSong?.title} - {currentSong?.album ? currentSong?.album : "Single"}
         </p>
         <p className="mb-4  text-center text-sm font-medium text-black dark:text-white">
-          {currentSong.artist} {!currentSong.featuring ? "" : "-"} {currentSong.featuring}
+          {currentSong?.artist} {!currentSong?.featuring ? "" : "-"} {currentSong?.featuring}
         </p>
         <div className="flex items-center justify-between text-sm text-gray-700 dark:text-white">
           <div>{formatTime(currentTime)}</div>

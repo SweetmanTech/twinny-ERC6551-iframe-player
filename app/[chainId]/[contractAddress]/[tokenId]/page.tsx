@@ -159,7 +159,7 @@ export default function Token({ params, searchParams }: TokenParams) {
     <div className="h-screen w-screen bg-slate-100">
       <div className="max-w-screen relative mx-auto aspect-square max-h-screen overflow-hidden bg-white">
         <div className="relative h-full w-full">
-          {nftMetadataLoading ? (
+          {nftMetadataLoading && twinnySongs.length < 1 ? (
             <div className="absolute left-[45%] top-[50%] z-10 h-20 w-20 -translate-x-[50%] -translate-y-[50%] animate-bounce">
               <TbLogo />
             </div>
